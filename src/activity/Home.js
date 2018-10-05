@@ -4,7 +4,8 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
-  StyleSheet
+  StyleSheet,
+  Platform
 } from 'react-native';
 import { MAIN_CONTAINER, WIDTH, HEIGHT, SECONDARY_COLOR } from '../style/style'
 import Banner from '../components/Banner'
@@ -24,7 +25,7 @@ import LogoTitle from '../components/LogoHeader';
 
 class Home extends React.Component {
   static navigationOptions = {
-    headerTitle: <View style={{ flexDirection: 'row', flex: 1, alignItems: 'center', marginLeft: 8 }}>
+    headerTitle: <View style={{ flexDirection: 'row', flex: 1, alignItems: 'center', marginLeft: 8,justifyContent:Platform.OS==='ios' ? 'center' : null }}>
       <Text style={{ color: 'white', fontSize: 24, fontWeight: 'bold' }}>GO </Text>
       <LogoTitle />
       <Text style={{ color: 'white', fontSize: 24, fontWeight: 'bold' }}> TIX</Text>
