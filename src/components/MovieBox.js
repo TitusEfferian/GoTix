@@ -8,20 +8,26 @@ import { WIDTH, PRIMARY_COLOR, WHITE, LOCATION_COLOR } from '../style/style'
 import { connect } from 'react-redux'
 import { requestFeatureMovies } from '../redux/actions/featureMovies';
 import Loading from './Spinner';
+import {isEqual} from 'lodash'
 
 class MovieBox extends React.Component {
 
 
     constructor(props) {
         super(props)
-        this.state = {
-            moviesData: null
-        }
     }
 
     componentDidMount() {
         this.props.featureMoviesRequest('jakarta')
     }
+
+    shouldComponentUpdate(nextProps,nextState){
+        if(isEqual(this.props.featureMovies.data,nextProps.featureMovies.data)){
+            return false
+        }
+        return true
+    }
+
 
     render() {
         console.log(this.props.featureMovies)

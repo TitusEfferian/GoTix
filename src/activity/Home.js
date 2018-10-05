@@ -23,6 +23,7 @@ import { requestFeatureMovies } from '../redux/actions/featureMovies';
 import SectionTitle from '../components/SectionTitle';
 import MovieBox from '../components/MovieBox';
 import LogoTitle from '../components/LogoHeader';
+import { isEqual } from 'lodash'
 
 class Home extends React.Component {
   static navigationOptions = {
@@ -71,7 +72,8 @@ class Home extends React.Component {
   }
 
   render() {
-    const { banner, location, showtime,featureMovies } = this.props
+    const { banner, location, showtime, featureMovies } = this.props
+    console.log(this.props)
     return (
       <ScrollView style={MAIN_CONTAINER}>
         <Modal
@@ -143,8 +145,8 @@ class Home extends React.Component {
 
         </SectionTitle>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 8 }}>
-          <MovieBox arrayNumber='0'/>
-          <MovieBox arrayNumber='1'/>
+          <MovieBox arrayNumber='0' />
+          <MovieBox arrayNumber='1' />
 
         </View>
       </ScrollView>
