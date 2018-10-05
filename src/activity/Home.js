@@ -18,7 +18,8 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import { connect } from 'react-redux'
 import { requestBanner } from '../redux/actions/banner';
 import { requestLocation } from '../redux/actions/location';
-import { requestShowTime } from '../redux/actions/showtime'
+import { requestShowTime } from '../redux/actions/showtime';
+import { requestFeatureMovies } from '../redux/actions/featureMovies';
 import SectionTitle from '../components/SectionTitle';
 import MovieBox from '../components/MovieBox';
 import LogoTitle from '../components/LogoHeader';
@@ -55,13 +56,12 @@ class Home extends React.Component {
   }
 
   renderLocation(data, index) {
-
     return (
       <TouchableOpacity onPress={() => {
         this.setState({
           location: data
         }), this.setModalVisible(false),
-          this.props.showtimeRequest(data)
+          this.props.featureMoviesRequest(data)
       }} key={index}>
         <Text style={{ marginBottom: 8, fontSize: 20 }}>
           {data}
@@ -71,8 +71,7 @@ class Home extends React.Component {
   }
 
   render() {
-    const { banner, location, showtime } = this.props
-    console.log(showtime)
+    const { banner, location, showtime,featureMovies } = this.props
     return (
       <ScrollView style={MAIN_CONTAINER}>
         <Modal
@@ -144,8 +143,8 @@ class Home extends React.Component {
 
         </SectionTitle>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 8 }}>
-          <MovieBox />
-          <MovieBox />
+          <MovieBox arrayNumber='0'/>
+          <MovieBox arrayNumber='1'/>
 
         </View>
       </ScrollView>
@@ -158,7 +157,7 @@ function mapStateToProps(state) {
   return {
     banner: state.banner,
     location: state.location,
-    showtime: state.showtime
+    showtime: state.showtime,
   }
 }
 
@@ -166,7 +165,8 @@ function mapDispatchToProps(dispatch) {
   return {
     bannerRequest: () => { dispatch(requestBanner()) },
     locationRequest: () => { dispatch(requestLocation()) },
-    showtimeRequest: (location) => { dispatch(requestShowTime(location)) }
+    showtimeRequest: (location) => { dispatch(requestShowTime(location)) },
+    featureMoviesRequest: (location) => { dispatch(requestFeatureMovies(location)) }
   }
 }
 const styles = StyleSheet.create({

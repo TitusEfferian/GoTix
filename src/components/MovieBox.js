@@ -4,18 +4,50 @@ import {
     StyleSheet,
     Image
 } from 'react-native'
-import { WIDTH } from '../style/style';
+import { WIDTH, PRIMARY_COLOR, WHITE, LOCATION_COLOR } from '../style/style'
+import { connect } from 'react-redux'
+import { requestFeatureMovies } from '../redux/actions/featureMovies';
+import Loading from './Spinner';
 
-const MovieBox = (props) => {
-    return (
-        <View style={styles.container}>
-            <Image source={{ uri: 'https://www.cgv.id/uploads/movie/pictures/18026700.jpg' }} style={{ flex: 1, height: 256 }} resizeMode='stretch' />
-            <View style={{ flex: 1, backgroundColor: 'white' }}>
-                
+class MovieBox extends React.Component {
+
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            moviesData: null
+        }
+    }
+
+    componentDidMount() {
+        this.props.featureMoviesRequest('jakarta')
+    }
+
+    render() {
+        console.log(this.props.featureMovies)
+        return (
+            <View style={styles.container}>
+                {
+                    this.props.featureMovies.data == undefined
+                        ?
+                        <View style={{ flex: 1,height:256, justifyContent: 'center', alignItems: 'center',backgroundColor:LOCATION_COLOR }}>
+                            <Loading />
+                        </View>
+                        :
+                        <View>
+                            <Image source={{ uri: this.props.featureMovies.data.data[this.props.arrayNumber].image }} style={{ flex: 1, height: 256 }} resizeMode='stretch' />
+                            <View style={{ flex: 1, backgroundColor: 'white' }}>
+                            </View>
+                        </View>
+
+                }
             </View>
-        </View>
-    )
+        )
+
+    }
 }
+
+
 
 const styles = StyleSheet.create({
     container: {
@@ -23,9 +55,21 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         overflow: 'hidden',
         position: 'relative',
-        backgroundColor: 'red'
+
     }
 
 })
 
-export default MovieBox
+const mapStateToProps = (state) => {
+    return {
+        featureMovies: state.featureMovies
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        featureMoviesRequest: (location) => { dispatch(requestFeatureMovies(location)) }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MovieBox)
