@@ -25,7 +25,7 @@ import LogoTitle from '../components/LogoHeader';
 
 class Home extends React.Component {
   static navigationOptions = {
-    headerTitle: <View style={{ flexDirection: 'row', flex: 1, alignItems: 'center', marginLeft: 8,justifyContent:Platform.OS==='ios' ? 'center' : null }}>
+    headerTitle: <View style={{ flexDirection: 'row', flex: 1, alignItems: 'center', marginLeft: 8, justifyContent: Platform.OS === 'ios' ? 'center' : null }}>
       <Text style={{ color: 'white', fontSize: 24, fontWeight: 'bold' }}>GO </Text>
       <LogoTitle />
       <Text style={{ color: 'white', fontSize: 24, fontWeight: 'bold' }}> TIX</Text>
@@ -60,7 +60,8 @@ class Home extends React.Component {
       <TouchableOpacity onPress={() => {
         this.setState({
           location: data
-        }), this.setModalVisible(false)
+        }), this.setModalVisible(false),
+          this.props.showtimeRequest(data)
       }} key={index}>
         <Text style={{ marginBottom: 8, fontSize: 20 }}>
           {data}
@@ -70,7 +71,7 @@ class Home extends React.Component {
   }
 
   render() {
-    const { banner, location,showtime } = this.props
+    const { banner, location, showtime } = this.props
     console.log(showtime)
     return (
       <ScrollView style={MAIN_CONTAINER}>
@@ -134,9 +135,13 @@ class Home extends React.Component {
           <Text style={{ fontSize: 24, color: 'white', fontWeight: 'bold' }}>
             Movies
           </Text>
-          <Text style={{ fontSize: 16, color: 'white' }}>
-            View All
-          </Text>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={{ fontSize: 16, color: 'white', marginRight: 8 }}>
+              View All
+            </Text>
+            <Icon name='ios-arrow-down' color={SECONDARY_COLOR} size={18} style={{ transform: [{ rotate: '-90deg' }] }} />
+          </View>
+
         </SectionTitle>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 8 }}>
           <MovieBox />
