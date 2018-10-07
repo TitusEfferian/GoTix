@@ -8,7 +8,7 @@ import {
 const EventCard = (props) => {
     return (
         <View style={styles.mainContainer}>
-            <Image style={styles.imageStyle}/>
+            <Image style={styles.imageStyle} />
         </View>
     )
 }
