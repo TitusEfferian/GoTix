@@ -19,7 +19,7 @@ export default class App extends Component {
     return (
       <Provider store={store}>
         <View style={{ flex: 1 }}>
-          <StatusBar backgroundColor={PRIMARY_COLOR_DARK} />
+          <StatusBar backgroundColor={PRIMARY_COLOR_DARK} barStyle='light-content'/>
           <MainActivity />
         </View>
       </Provider>

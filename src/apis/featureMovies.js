@@ -1,8 +1,10 @@
 
+
+
 import axios from 'axios'
 
-export function showtimeApi(location) {
-    let url = 'https://gotix-api.gojekapi.com/v1/web/movie/showtimes?city='+location+'&date=2018-10-05'
+export function featureMoviesApi(location) {
+    let url = 'https://gotix-api.gojekapi.com/v2/web/movie/featured_movies?city=' + location
     return axios.get(url)
         .then(function (response) {
             return response.data
