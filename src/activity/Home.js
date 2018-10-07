@@ -188,8 +188,15 @@ class Home extends React.Component {
             </Text>
             <Icon name='ios-arrow-down' color={SECONDARY_COLOR} size={18} style={{ transform: [{ rotate: '-90deg' }] }} />
           </View>
-
         </SectionTitle>
+        <View style={{flex:1,height:256,justifyContent:'center',alignItems:'center'}}>
+          <Text style={DEFAULT_TEXT_STYLE}>on development</Text>
+        </View>
+        <View style={{flex:1,padding:32,justifyContent:'center',alignItems:'center'}}>
+          <Text style={[DEFAULT_TEXT_STYLE,{textAlign:'center'}]}>
+            Originaly Clone With React Native by {'\n'} Titus Efferian
+          </Text>
+        </View>
       </ScrollView>
 
     )
