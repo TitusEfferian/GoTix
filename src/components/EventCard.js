@@ -4,13 +4,13 @@ import {
     StyleSheet,
     Image
 } from 'react-native'
-import { LOCATION_COLOR } from '../style/style';
+import { LOCATION_COLOR, WIDTH } from '../style/style';
 import Loading from './Spinner';
 
 class EventCard extends React.PureComponent {
     render() {
         return (
-            <View style={styles.mainContainer}>
+            <View style={[styles.mainContainer]}>
                 {
                     this.props.loading
                         ?
@@ -27,10 +27,11 @@ class EventCard extends React.PureComponent {
 
 const styles = StyleSheet.create({
     mainContainer: {
-        flex: 1,
+        width:WIDTH-16,
         height: 208,
         borderRadius: 8,
-        margin: 8
+        overflow: 'hidden',
+        margin:8
     },
     imageStyle: {
         flex: 1,

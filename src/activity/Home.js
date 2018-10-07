@@ -193,14 +193,23 @@ class Home extends React.Component {
           </View>
         </SectionTitle>
 
-          {/* <Text style={DEFAULT_TEXT_STYLE}>on development</Text> */}
-          {
-            eventList.data==undefined || eventList.isFetching
+        {/* <Text style={DEFAULT_TEXT_STYLE}>on development</Text> */}
+        {
+          eventList.data == undefined || eventList.isFetching
             ?
             <EventCard loading={true}/>
             :
-            <EventCard image={eventList.data.data[0].image}/>
-          }
+            <ScrollView horizontal={true}>
+              {
+                eventList.data.data.map((data, index) => {
+                  return (
+                    <EventCard image={data.image} key={index}/>
+                  )
+                })
+              }
+            </ScrollView>
+            
+        }
 
         <View style={{ flex: 1, padding: 32, justifyContent: 'center', alignItems: 'center' }}>
           <Text style={[DEFAULT_TEXT_STYLE, { textAlign: 'center' }]}>
