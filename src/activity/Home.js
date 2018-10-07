@@ -41,11 +41,19 @@ class Home extends React.Component {
   componentDidMount() {
     this.props.bannerRequest()
     this.props.locationRequest()
-    this.props.showtimeRequest('jakarta')
+    // this.props.showtimeRequest('jakarta')
+    this.props.featureMoviesRequest('jakarta')
   }
 
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (isEqual(this.props, nextProps) && isEqual(this.state, nextState)) {
+      return false
+    }
+    return true
   }
 
   renderBanner(data, index) {
@@ -73,7 +81,6 @@ class Home extends React.Component {
 
   render() {
     const { banner, location, showtime, featureMovies } = this.props
-    console.log(this.props)
     return (
       <ScrollView style={MAIN_CONTAINER}>
         <Modal
@@ -145,10 +152,38 @@ class Home extends React.Component {
 
         </SectionTitle>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 8 }}>
-          <MovieBox arrayNumber='0' />
-          <MovieBox arrayNumber='1' />
-
+          {
+            featureMovies.data == undefined || featureMovies.isFetching
+              ?
+              <ScrollView horizontal={true}>
+                <MovieBox loading={true} marginRight={8}/>
+                <MovieBox loading={true} marginRight={0}/>
+              </ScrollView>
+              :
+              <ScrollView horizontal={true}>
+                {
+                  featureMovies.data.data.map((data, index) => {
+                    return (
+                      <MovieBox arrayNumber={index} featureMovies={data} key={index} marginRight={featureMovies.data.data.length - 1 == index ? 0 : 8} />
+                    )
+                  })
+                }
+              </ScrollView>
+          }
         </View>
+
+        <SectionTitle>
+          <Text style={{ fontSize: 24, color: 'white', fontWeight: 'bold' }}>
+            Events
+          </Text>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={{ fontSize: 16, color: 'white', marginRight: 8 }}>
+              View All
+            </Text>
+            <Icon name='ios-arrow-down' color={SECONDARY_COLOR} size={18} style={{ transform: [{ rotate: '-90deg' }] }} />
+          </View>
+
+        </SectionTitle>
       </ScrollView>
 
     )
@@ -159,7 +194,8 @@ function mapStateToProps(state) {
   return {
     banner: state.banner,
     location: state.location,
-    showtime: state.showtime,
+    // showtime: state.showtime,
+    featureMovies: state.featureMovies
   }
 }
 
@@ -167,7 +203,7 @@ function mapDispatchToProps(dispatch) {
   return {
     bannerRequest: () => { dispatch(requestBanner()) },
     locationRequest: () => { dispatch(requestLocation()) },
-    showtimeRequest: (location) => { dispatch(requestShowTime(location)) },
+    // showtimeRequest: (location) => { dispatch(requestShowTime(location)) },
     featureMoviesRequest: (location) => { dispatch(requestFeatureMovies(location)) }
   }
 }
