@@ -7,7 +7,7 @@ import {
   StyleSheet,
   Platform
 } from 'react-native';
-import { MAIN_CONTAINER, WIDTH, HEIGHT, SECONDARY_COLOR } from '../style/style'
+import { MAIN_CONTAINER, WIDTH, HEIGHT, SECONDARY_COLOR, DEFAULT_TEXT_STYLE } from '../style/style'
 import Banner from '../components/Banner'
 import TextInput from '../components/TextInput';
 import Loading from '../components/Spinner';
@@ -159,6 +159,12 @@ class Home extends React.Component {
                 <MovieBox loading={true} marginRight={8}/>
                 <MovieBox loading={true} marginRight={0}/>
               </ScrollView>
+              :
+              featureMovies.data.data.length == 0 
+              ?
+              <View style={{flex:1,height:256,justifyContent:'center',alignItems:'center'}}>
+                <Text style={DEFAULT_TEXT_STYLE}>We are so sorry, no movies available</Text>
+              </View>
               :
               <ScrollView horizontal={true}>
                 {

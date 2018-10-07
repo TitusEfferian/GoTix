@@ -14,3 +14,7 @@ export const MAIN_CONTAINER = {
     flex: 1,
     backgroundColor: PRIMARY_COLOR
 }
+
+export const DEFAULT_TEXT_STYLE={
+    fontSize: 16, color: 'white',
+}
