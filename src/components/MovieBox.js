@@ -10,19 +10,11 @@ import { requestFeatureMovies } from '../redux/actions/featureMovies';
 import Loading from './Spinner';
 import { isEqual } from 'lodash'
 
-class MovieBox extends React.Component {
+class MovieBox extends React.PureComponent {
 
 
   constructor(props) {
     super(props)
-  }
-
-
-  shouldComponentUpdate(nextProps, nextState) {
-    if (isEqual(this.props.featureMovies, nextProps.featureMovies)) {
-      return false
-    }
-    return true
   }
 
   render() {
