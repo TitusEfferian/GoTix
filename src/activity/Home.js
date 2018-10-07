@@ -20,10 +20,12 @@ import { requestBanner } from '../redux/actions/banner';
 import { requestLocation } from '../redux/actions/location';
 import { requestShowTime } from '../redux/actions/showtime';
 import { requestFeatureMovies } from '../redux/actions/featureMovies';
+import { requestEventList } from '../redux/actions/eventList';
 import SectionTitle from '../components/SectionTitle';
 import MovieBox from '../components/MovieBox';
 import LogoTitle from '../components/LogoHeader';
 import { isEqual } from 'lodash'
+import EventCard from '../components/EventCard';
 
 class Home extends React.Component {
   static navigationOptions = {
@@ -43,6 +45,7 @@ class Home extends React.Component {
     this.props.locationRequest()
     // this.props.showtimeRequest('jakarta')
     this.props.featureMoviesRequest('jakarta')
+    this.props.eventListRequest()
   }
 
   setModalVisible(visible) {
@@ -80,7 +83,7 @@ class Home extends React.Component {
   }
 
   render() {
-    const { banner, location, showtime, featureMovies } = this.props
+    const { banner, location, showtime, featureMovies, eventList } = this.props
     return (
       <ScrollView style={MAIN_CONTAINER}>
         <Modal
@@ -156,25 +159,25 @@ class Home extends React.Component {
             featureMovies.data == undefined || featureMovies.isFetching
               ?
               <ScrollView horizontal={true}>
-                <MovieBox loading={true} marginRight={8}/>
-                <MovieBox loading={true} marginRight={0}/>
+                <MovieBox loading={true} marginRight={8} />
+                <MovieBox loading={true} marginRight={0} />
               </ScrollView>
               :
-              featureMovies.data.data.length == 0 
-              ?
-              <View style={{flex:1,height:256,justifyContent:'center',alignItems:'center'}}>
-                <Text style={DEFAULT_TEXT_STYLE}>We are so sorry, no movies available</Text>
-              </View>
-              :
-              <ScrollView horizontal={true}>
-                {
-                  featureMovies.data.data.map((data, index) => {
-                    return (
-                      <MovieBox arrayNumber={index} featureMovies={data} key={index} marginRight={featureMovies.data.data.length - 1 == index ? 0 : 8} />
-                    )
-                  })
-                }
-              </ScrollView>
+              featureMovies.data.data.length == 0
+                ?
+                <View style={{ flex: 1, height: 256, justifyContent: 'center', alignItems: 'center' }}>
+                  <Text style={DEFAULT_TEXT_STYLE}>We are so sorry, no movies available</Text>
+                </View>
+                :
+                <ScrollView horizontal={true}>
+                  {
+                    featureMovies.data.data.map((data, index) => {
+                      return (
+                        <MovieBox arrayNumber={index} featureMovies={data} key={index} marginRight={featureMovies.data.data.length - 1 == index ? 0 : 8} />
+                      )
+                    })
+                  }
+                </ScrollView>
           }
         </View>
 
@@ -189,11 +192,27 @@ class Home extends React.Component {
             <Icon name='ios-arrow-down' color={SECONDARY_COLOR} size={18} style={{ transform: [{ rotate: '-90deg' }] }} />
           </View>
         </SectionTitle>
-        <View style={{flex:1,height:256,justifyContent:'center',alignItems:'center'}}>
-          <Text style={DEFAULT_TEXT_STYLE}>on development</Text>
-        </View>
-        <View style={{flex:1,padding:32,justifyContent:'center',alignItems:'center'}}>
-          <Text style={[DEFAULT_TEXT_STYLE,{textAlign:'center'}]}>
+
+        {/* <Text style={DEFAULT_TEXT_STYLE}>on development</Text> */}
+        {
+          eventList.data == undefined || eventList.isFetching
+            ?
+            <EventCard loading={true}/>
+            :
+            <ScrollView horizontal={true}>
+              {
+                eventList.data.data.map((data, index) => {
+                  return (
+                    <EventCard image={data.image} key={index}/>
+                  )
+                })
+              }
+            </ScrollView>
+            
+        }
+
+        <View style={{ flex: 1, padding: 32, justifyContent: 'center', alignItems: 'center' }}>
+          <Text style={[DEFAULT_TEXT_STYLE, { textAlign: 'center' }]}>
             Originaly Clone With React Native by {'\n'} Titus Efferian
           </Text>
         </View>
@@ -208,7 +227,8 @@ function mapStateToProps(state) {
     banner: state.banner,
     location: state.location,
     // showtime: state.showtime,
-    featureMovies: state.featureMovies
+    featureMovies: state.featureMovies,
+    eventList: state.eventList
   }
 }
 
@@ -217,7 +237,8 @@ function mapDispatchToProps(dispatch) {
     bannerRequest: () => { dispatch(requestBanner()) },
     locationRequest: () => { dispatch(requestLocation()) },
     // showtimeRequest: (location) => { dispatch(requestShowTime(location)) },
-    featureMoviesRequest: (location) => { dispatch(requestFeatureMovies(location)) }
+    featureMoviesRequest: (location) => { dispatch(requestFeatureMovies(location)) },
+    eventListRequest: () => { dispatch(requestEventList()) }
   }
 }
 const styles = StyleSheet.create({
