@@ -208,12 +208,11 @@ class Home extends React.Component {
                 })
               }
             </ScrollView>
-            
         }
 
         <View style={{ flex: 1, padding: 32, justifyContent: 'center', alignItems: 'center' }}>
           <Text style={[DEFAULT_TEXT_STYLE, { textAlign: 'center' }]}>
-            Originaly Clone With React Native by {'\n'} Titus Efferian
+            Originally Cloned with React-Native by {'\n'} Titus Efferian
           </Text>
         </View>
       </ScrollView>
