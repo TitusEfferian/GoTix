@@ -2,6 +2,8 @@
 
 This is an unofficial clone of [GoTix](https://go-tix.id/) created using React-Native.
 
+P.S. Star and share this repository if you want to learn React-Native together with me :D
+
 ## Getting Started
 
 1. Clone to your local machine
