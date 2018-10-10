@@ -8,9 +8,9 @@ import { SECONDARY_COLOR, WHITE, TEXT_COLOR } from '../style/style';
 import Icon from 'react-native-vector-icons/Ionicons'
 
 
-const TextInput = () => {
+const TextInput = (props) => {
     return (
-        <View style={styles.container}>
+        <View style={[styles.container,props.style]}>
             <View style={styles.textInputContainer}>
                 <Text style={styles.textStyle}>
                     Search Movie or Events
@@ -31,7 +31,10 @@ const styles = StyleSheet.create({
         backgroundColor: WHITE,
         justifyContent: 'space-between',
         alignItems:'center',
-        flexDirection:'row'
+        flexDirection:'row',
+        position:'relative',
+        left:0,
+        right:0,
     },
     textStyle: {
         color: TEXT_COLOR

@@ -86,6 +86,7 @@ class Home extends React.Component {
     const { banner, location, showtime, featureMovies, eventList } = this.props
     return (
       <ScrollView style={MAIN_CONTAINER}>
+        <TextInput style={{position:'absolute',top:302,left:0,right:0}}/>
         <Modal
           animationType="slide"
           transparent={true}
@@ -130,7 +131,10 @@ class Home extends React.Component {
 
             </View>
         }
-        <TextInput />
+        {/* <View style={{position:'absolute',top:261,left:0,right:0}}>
+          <TextInput />
+
+        </View> */}
         <TouchableOpacity
           onPress={
             () => {
@@ -142,7 +146,7 @@ class Home extends React.Component {
             {this.state.location == null ? 'Choose Your Location' : this.state.location}
           </Location>
         </TouchableOpacity>
-        <SectionTitle>
+        <SectionTitle style={{marginTop:56}}>
           <Text style={{ fontSize: 24, color: 'white', fontWeight: 'bold' }}>
             Movies
           </Text>
@@ -197,18 +201,18 @@ class Home extends React.Component {
         {
           eventList.data == undefined || eventList.isFetching
             ?
-            <EventCard loading={true}/>
+            <EventCard loading={true} />
             :
             <ScrollView horizontal={true}>
               {
                 eventList.data.data.map((data, index) => {
                   return (
-                    <EventCard image={data.image} key={index}/>
+                    <EventCard image={data.image} key={index} />
                   )
                 })
               }
             </ScrollView>
-            
+
         }
 
         <View style={{ flex: 1, padding: 32, justifyContent: 'center', alignItems: 'center' }}>

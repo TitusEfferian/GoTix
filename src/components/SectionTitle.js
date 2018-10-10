@@ -3,7 +3,7 @@ import {View,StyleSheet} from 'react-native'
 
 const SectionTitle = (props) =>{
     return(
-        <View style={styles.sectionContainer}>
+        <View style={[styles.sectionContainer,props.style]}>
             {props.children}
         </View>
     )
