@@ -102,7 +102,7 @@ class Home extends React.Component {
     })
     return (
       <View style={{ flex: 1 }}>
-        <ScrollView scrollEventThrottle={1} style={MAIN_CONTAINER}  onScroll={
+        <ScrollView scrollEventThrottle={1} style={[MAIN_CONTAINER]}  onScroll={
           Animated.event([
             {
               nativeEvent: {
