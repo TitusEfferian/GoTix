@@ -5,7 +5,8 @@ import {
   Image,
   TouchableOpacity,
   StyleSheet,
-  Platform
+  Platform,
+  Animated
 } from 'react-native';
 import { MAIN_CONTAINER, WIDTH, HEIGHT, SECONDARY_COLOR, DEFAULT_TEXT_STYLE } from '../style/style'
 import Banner from '../components/Banner'
@@ -36,10 +37,20 @@ class Home extends React.Component {
     </View>
   }
 
-  state = {
-    modalVisible: false,
-    location: null
+  constructor(props) {
+    super(props)
+    this.state = {
+      modalVisible: false,
+      location: null,
+      scrollY: new Animated.Value(0),
+      extrapolate:'clamp'
+    }
+
   }
+
+
+
+
   componentDidMount() {
     this.props.bannerRequest()
     this.props.locationRequest()
@@ -84,143 +95,164 @@ class Home extends React.Component {
 
   render() {
     const { banner, location, showtime, featureMovies, eventList } = this.props
+    const headerHeight = this.state.scrollY.interpolate({
+      inputRange: [0, 302],
+      outputRange: [302, 0],
+      extrapolate: this.state.extrapolate
+    })
     return (
-      <ScrollView style={MAIN_CONTAINER}>
-        <TextInput style={{position:'absolute',top:302,left:0,right:0}}/>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={this.state.modalVisible}
+      <View style={{ flex: 1 }}>
+        <ScrollView scrollEventThrottle={1} style={MAIN_CONTAINER}  onScroll={
+          Animated.event([
+            {
+              nativeEvent: {
+                contentOffset: {
+                  y: this.state.scrollY
+                }
+              }
+            }
+          ])
+        } 
         >
-          <View style={{ flex: 1 }}>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Text style={{ color: SECONDARY_COLOR, fontSize: 16 }}>
-                Your Location
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={this.state.modalVisible}
+          >
+            <View style={{ flex: 1 }}>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Text style={{ color: SECONDARY_COLOR, fontSize: 16 }}>
+                  Your Location
               </Text>
-              <TouchableOpacity onPress={() => { this.setModalVisible(false) }}>
-                <Icon name='md-close' color={SECONDARY_COLOR} size={24} />
-              </TouchableOpacity>
-            </View>
+                <TouchableOpacity onPress={() => { this.setModalVisible(false) }}>
+                  <Icon name='md-close' color={SECONDARY_COLOR} size={24} />
+                </TouchableOpacity>
+              </View>
 
-            <View style={{ height: 1, backgroundColor: 'gray', marginTop: 16 }}>
+              <View style={{ height: 1, backgroundColor: 'gray', marginTop: 16 }}>
 
-            </View>
-            <ScrollView>
-              {
-                location.data != undefined
-                  ?
-                  location.data.data.cities.map((data, index) => this.renderLocation(data, index))
-                  :
-                  null
-              }
-            </ScrollView>
-
-          </View>
-        </Modal>
-        {
-          banner.data != undefined && !banner.data.isFetching
-            ?
-            <Banner>
-              {
-                banner.data.data.map((data, index) => this.renderBanner(data, index))
-              }
-            </Banner>
-            :
-            <View style={styles.bannerContainer}>
-              <Loading />
+              </View>
+              <ScrollView>
+                {
+                  location.data != undefined
+                    ?
+                    location.data.data.cities.map((data, index) => this.renderLocation(data, index))
+                    :
+                    null
+                }
+              </ScrollView>
 
             </View>
-        }
-        {/* <View style={{position:'absolute',top:261,left:0,right:0}}>
+          </Modal>
+          {
+            banner.data != undefined && !banner.data.isFetching
+              ?
+              <Banner>
+                {
+                  banner.data.data.map((data, index) => this.renderBanner(data, index))
+                }
+              </Banner>
+              :
+              <View style={styles.bannerContainer}>
+                <Loading />
+
+              </View>
+          }
+          {/* <View style={{position:'absolute',top:261,left:0,right:0}}>
           <TextInput />
 
         </View> */}
-        <TouchableOpacity
-          onPress={
-            () => {
-              this.setModalVisible(true)
-            }
-          }
-        >
-          <Location>
-            {this.state.location == null ? 'Choose Your Location' : this.state.location}
-          </Location>
-        </TouchableOpacity>
-        <SectionTitle style={{marginTop:56}}>
-          <Text style={{ fontSize: 24, color: 'white', fontWeight: 'bold' }}>
-            Movies
-          </Text>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={{ fontSize: 16, color: 'white', marginRight: 8 }}>
-              View All
-            </Text>
-            <Icon name='ios-arrow-down' color={SECONDARY_COLOR} size={18} style={{ transform: [{ rotate: '-90deg' }] }} />
-          </View>
-
-        </SectionTitle>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 8 }}>
-          {
-            featureMovies.data == undefined || featureMovies.isFetching
-              ?
-              <ScrollView horizontal={true}>
-                <MovieBox loading={true} marginRight={8} />
-                <MovieBox loading={true} marginRight={0} />
-              </ScrollView>
-              :
-              featureMovies.data.data.length == 0
-                ?
-                <View style={{ flex: 1, height: 256, justifyContent: 'center', alignItems: 'center' }}>
-                  <Text style={DEFAULT_TEXT_STYLE}>We are so sorry, no movies available</Text>
-                </View>
-                :
-                <ScrollView horizontal={true}>
-                  {
-                    featureMovies.data.data.map((data, index) => {
-                      return (
-                        <MovieBox arrayNumber={index} featureMovies={data} key={index} marginRight={featureMovies.data.data.length - 1 == index ? 0 : 8} />
-                      )
-                    })
-                  }
-                </ScrollView>
-          }
-        </View>
-
-        <SectionTitle>
-          <Text style={{ fontSize: 24, color: 'white', fontWeight: 'bold' }}>
-            Events
-          </Text>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={{ fontSize: 16, color: 'white', marginRight: 8 }}>
-              View All
-            </Text>
-            <Icon name='ios-arrow-down' color={SECONDARY_COLOR} size={18} style={{ transform: [{ rotate: '-90deg' }] }} />
-          </View>
-        </SectionTitle>
-
-        {/* <Text style={DEFAULT_TEXT_STYLE}>on development</Text> */}
-        {
-          eventList.data == undefined || eventList.isFetching
-            ?
-            <EventCard loading={true} />
-            :
-            <ScrollView horizontal={true}>
-              {
-                eventList.data.data.map((data, index) => {
-                  return (
-                    <EventCard image={data.image} key={index} />
-                  )
-                })
+          <TouchableOpacity
+            onPress={
+              () => {
+                this.setModalVisible(true)
               }
-            </ScrollView>
-
-        }
-
-        <View style={{ flex: 1, padding: 32, justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={[DEFAULT_TEXT_STYLE, { textAlign: 'center' }]}>
-            Originaly Clone With React Native by {'\n'} Titus Efferian
+            }
+          >
+            <Location>
+              {this.state.location == null ? 'Choose Your Location' : this.state.location}
+            </Location>
+          </TouchableOpacity>
+          <SectionTitle style={{ marginTop: 56 }}>
+            <Text style={{ fontSize: 24, color: 'white', fontWeight: 'bold' }}>
+              Movies
           </Text>
-        </View>
-      </ScrollView>
+            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+              <Text style={{ fontSize: 16, color: 'white', marginRight: 8 }}>
+                View All
+            </Text>
+              <Icon name='ios-arrow-down' color={SECONDARY_COLOR} size={18} style={{ transform: [{ rotate: '-90deg' }] }} />
+            </View>
+
+          </SectionTitle>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 8 }}>
+            {
+              featureMovies.data == undefined || featureMovies.isFetching
+                ?
+                <ScrollView horizontal={true}>
+                  <MovieBox loading={true} marginRight={8} />
+                  <MovieBox loading={true} marginRight={0} />
+                </ScrollView>
+                :
+                featureMovies.data.data.length == 0
+                  ?
+                  <View style={{ flex: 1, height: 256, justifyContent: 'center', alignItems: 'center' }}>
+                    <Text style={DEFAULT_TEXT_STYLE}>We are so sorry, no movies available</Text>
+                  </View>
+                  :
+                  <ScrollView horizontal={true}>
+                    {
+                      featureMovies.data.data.map((data, index) => {
+                        return (
+                          <MovieBox arrayNumber={index} featureMovies={data} key={index} marginRight={featureMovies.data.data.length - 1 == index ? 0 : 8} />
+                        )
+                      })
+                    }
+                  </ScrollView>
+            }
+          </View>
+
+          <SectionTitle>
+            <Text style={{ fontSize: 24, color: 'white', fontWeight: 'bold' }}>
+              Events
+          </Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+              <Text style={{ fontSize: 16, color: 'white', marginRight: 8 }}>
+                View All
+            </Text>
+              <Icon name='ios-arrow-down' color={SECONDARY_COLOR} size={18} style={{ transform: [{ rotate: '-90deg' }] }} />
+            </View>
+          </SectionTitle>
+
+          {/* <Text style={DEFAULT_TEXT_STYLE}>on development</Text> */}
+          {
+            eventList.data == undefined || eventList.isFetching
+              ?
+              <EventCard loading={true} />
+              :
+              <ScrollView horizontal={true}>
+                {
+                  eventList.data.data.map((data, index) => {
+                    return (
+                      <EventCard image={data.image} key={index} />
+                    )
+                  })
+                }
+              </ScrollView>
+
+          }
+
+          <View style={{ flex: 1, padding: 32, justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={[DEFAULT_TEXT_STYLE, { textAlign: 'center' }]}>
+              Originaly Clone With React Native by {'\n'} Titus Efferian
+          </Text>
+          </View>
+        </ScrollView>
+        <Animated.View style={{ position: 'absolute', top: headerHeight, left: 0, right: 0 }}>
+          <TextInput />
+        </Animated.View>
+      </View>
+
 
     )
   }
