@@ -6,6 +6,7 @@ import { fetchShowtime } from './showtime';
 import { fetchFeatureMovies } from './featureMovies';
 import { fetchEventList } from './eventList';
 import { fetchCategoryApi } from './category';
+import { fetchSearchApi } from './search';
 
 export default function* watchSagas() {
     yield all([
@@ -14,6 +15,7 @@ export default function* watchSagas() {
         yield takeEvery(Types.REQUEST_SHOWTIME,fetchShowtime),
         yield takeEvery(Types.REQUEST_FEATURE_MOVIES,fetchFeatureMovies),
         yield takeEvery(Types.REQUEST_EVENT_LIST,fetchEventList),
-        yield takeEvery(Types.REQUEST_CATEGORY,fetchCategoryApi)
+        yield takeEvery(Types.REQUEST_CATEGORY,fetchCategoryApi),
+        yield takeEvery(Types.REQUEST_SEARCH,fetchSearchApi)
     ])
 }
