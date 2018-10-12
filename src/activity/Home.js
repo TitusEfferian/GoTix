@@ -249,7 +249,9 @@ class Home extends React.Component {
           </View>
         </ScrollView>
         <Animated.View style={{ position: 'absolute', top: headerHeight, left: 0, right: 0 }}>
-          <TextInput />
+          <TouchableOpacity onPress={()=>{this.props.navigation.navigate('Search')}} activeOpacity={1}>
+            <TextInput />
+          </TouchableOpacity>
         </Animated.View>
       </View>
 
