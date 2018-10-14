@@ -44,7 +44,7 @@ class Search extends React.PureComponent {
           <TextInput
             style={{ flex: 1, padding: 8, backgroundColor: 'white', borderRadius: 8, marginRight: 8 }}
             placeholder={'Search Movies or Events'}
-            onChangeText={(text) => { this.setState({ inputText: text }), text.length>0 ? this.props.searchRequest(text) : null}}
+            onChangeText={(text) => { this.setState({ inputText: text }), text.length > 0 ? this.props.searchRequest(text) : null }}
             value={this.state.text}
           />
         </View>
@@ -54,11 +54,16 @@ class Search extends React.PureComponent {
               ?
               this.props.search.data != undefined && !this.props.search.isFetching
                 ?
-                <MovieContainer
-                  thumbnail={this.props.search.data.data.movies[0].thumbnail}
-                  name={this.props.search.data.data.movies[0].name}
-                  tags={this.props.search.data.data.movies[0].tags}
-                />
+                this.props.search.data.data.movies.map((data, key) => {
+                  return (
+                    <MovieContainer
+                      thumbnail={data.thumbnail}
+                      name={data.name}
+                      tags={data.tags}
+                      key={key}
+                    />
+                  )
+                })
                 :
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 32 }}>
                   <Loading />

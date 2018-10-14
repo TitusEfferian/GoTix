@@ -30,7 +30,7 @@ class MovieCardBox extends React.PureComponent {
         <Image
           resizeMode='stretch'
           source={{ uri: this.props.thumbnail }}
-          style={{ width: this.state.width / 4, height: this.state.height / 4 ,marginRight:16}}
+          style={{ width: 90,height:128 ,marginRight:16}}
         />
         <View style={{flex:1}}>
           <Text style={[DEFAUL_TEXT_STYLE_BOLD]} numberOfLines={1}>{this.props.name}</Text>
