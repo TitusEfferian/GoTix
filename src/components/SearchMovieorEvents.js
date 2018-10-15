@@ -16,25 +16,18 @@ class MovieCardBox extends React.PureComponent {
       loading: false
     }
   }
-  componentDidMount() {
-    Image.getSize(this.props.thumbnail, (x, y) => {
-      this.setState({
-        width: x,
-        height: y
-      })
-    })
-  }
+  
   render() {
     return (
       <View style={styles.mainContainer}>
         <Image
           resizeMode='stretch'
           source={{ uri: this.props.thumbnail }}
-          style={{ width: 90,height:128 ,marginRight:16}}
+          style={{ width: this.props.type == 'Movies' ? 90 :90 ,height:this.props.type=='Movies' ? 128 : 49 ,marginRight:16}}
         />
         <View style={{flex:1}}>
           <Text style={[DEFAUL_TEXT_STYLE_BOLD]} numberOfLines={1}>{this.props.name}</Text>
-          <Text style={[DEFAULT_TEXT_STYLE,{marginTop:16,color:TEXT_BLUE_COLOR}]}><Text style={[DEFAULT_TEXT_STYLE,{color:SECONDARY_COLOR}]}>Movie</Text> | {this.props.tags}</Text>
+          <Text style={[DEFAULT_TEXT_STYLE,{marginTop:16,color:TEXT_BLUE_COLOR}]}><Text style={[DEFAULT_TEXT_STYLE,{color:SECONDARY_COLOR}]}>{this.props.type}</Text> | {this.props.tags}</Text>
         </View>
       </View>
     )

@@ -26,8 +26,9 @@ class Search extends React.PureComponent {
     }
   }
 
+
   render() {
-    console.log(this.props.search)
+
     return (
       <View style={styles.mainContainer}>
         <View style={{
@@ -54,16 +55,40 @@ class Search extends React.PureComponent {
               ?
               this.props.search.data != undefined && !this.props.search.isFetching
                 ?
-                this.props.search.data.data.movies.map((data, key) => {
-                  return (
-                    <MovieContainer
-                      thumbnail={data.thumbnail}
-                      name={data.name}
-                      tags={data.tags}
-                      key={key}
-                    />
-                  )
-                })
+                <View>
+
+
+                  <View>
+                    {
+                      this.props.search.data.data.movies.map((data, key) => {
+                        return (
+                          <MovieContainer
+                            thumbnail={data.thumbnail}
+                            name={data.name}
+                            tags={data.tags}
+                            key={key}
+                            type={'Movies'}
+                          />
+                        )
+                      })
+                    }
+                  </View>
+                  <View>
+                    {
+                      this.props.search.data.data.events.map((data, key) => {
+                        return (
+                          <MovieContainer
+                            thumbnail={data.thumbnail}
+                            name={data.name}
+                            tags={data.tags}
+                            key={key}
+                            type={'Events'}
+                          />
+                        )
+                      })
+                    }
+                  </View>
+                </View>
                 :
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 32 }}>
                   <Loading />
