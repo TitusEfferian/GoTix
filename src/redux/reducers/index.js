@@ -5,5 +5,6 @@ export default combineReducers({
     location:require('./location').reducer,
     showtime:require('./showtime').reducer,
     featureMovies:require('./featureMovies').reducer,
-    eventList:require('./eventList').reducer
+    eventList:require('./eventList').reducer,
+    search:require('./search').reducer
 })
