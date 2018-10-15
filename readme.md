@@ -14,3 +14,7 @@ git clone https://github.com/TitusEfferian/gotix.git
 3. Install all the dependencies with `npm install`
 4. Start the server using `npm start`
 5. Run the project using `react-native run-android` or `react-native run-ios`
+
+### Demo
+
+```https://photos.app.goo.gl/nGNKEZBeWhRPx4Mu7```
